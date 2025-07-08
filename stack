@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Node {
+    char data[50];
+    struct Node* next;
+};
+void push(struct Node** top, const char* item) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (!newNode) {
+        printf("Heap overflow\n");
+        return;
+    }
+    strcpy(newNode->data, item);
+    newNode->next = *top;
+    *top = newNode;
+}
+void pop(struct Node** top) {
+    if (*top == NULL) {
+        printf("Stack underflow\n");
+        return;
+    }
+    struct Node* temp = *top;
+    *top = (*top)->next;
+    printf("Popped: %s\n", temp->data);
+    free(temp);
+}
+
+void displayStack(struct Node* top) {
+    if (top == NULL) {
+        printf("Stack is empty.\n");
+        return;
+    }
+    struct Node* temp = top;
+    printf("Stack (top to bottom):\n");
+    while (temp != NULL) {
+        printf("%s\n", temp->data);
+        temp = temp->next;
+    }
+}
+void deleteStack(struct Node** top) {
+    struct Node* current = *top;
+    struct Node* nextNode;
+
+    while (current != NULL) {
+        nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+
+    *top = NULL;
+    printf("Stack deleted.\n");
+}
+
+int main() {
+    struct Node* stackTop = NULL;
+
+    push(&stackTop, "ruler");
+    push(&stackTop, "sharpener");
+    push(&stackTop, "eraser");
+    push(&stackTop, "notebook");
+    push(&stackTop, "pen");
+
+    printf("Initial stack:\n");
+    displayStack(stackTop);
+
+    printf("\nAfter pushing 'marker':\n");
+    push(&stackTop, "marker");
+    displayStack(stackTop);
+
+    printf("\nPopping top item:\n");
+    pop(&stackTop);
+    displayStack(stackTop);
+
+    printf("\nDeleting the stack:\n");
+    deleteStack(&stackTop);
+    displayStack(stackTop);
+
+    return 0;
+}
