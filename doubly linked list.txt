@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Node {
+    char data[50];
+    struct Node* prev;
+    struct Node* next;
+};
+struct Node* createNode(const char* data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->data, data);
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+void insertAtBeginning(struct Node** head, const char* data) {
+    struct Node* newNode = createNode(data);
+    newNode->next = *head;
+
+    if (*head != NULL)
+        (*head)->prev = newNode;
+
+    *head = newNode;
+}
+void insertAtEnd(struct Node** head, const char* data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    struct Node* temp = *head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+void insertAtPosition(struct Node** head, const char* data, int position) {
+    if (position <= 1) {
+        insertAtBeginning(head, data);
+        return;
+    }
+
+    struct Node* temp = *head;
+    for (int i = 1; i < position - 1 && temp != NULL; i++)
+        temp = temp->next;
+
+    if (temp == NULL) {
+        insertAtEnd(head, data);
+        return;
+    }
+
+    struct Node* newNode = createNode(data);
+    newNode->next = temp->next;
+    newNode->prev = temp;
+
+    if (temp->next != NULL)
+        temp->next->prev = newNode;
+
+    temp->next = newNode;
+}
+void displayForward(struct Node* head) {
+    printf("List (forward):\n");
+    while (head != NULL) {
+        printf("%s <-> ", head->data);
+        if (head->next == NULL) break;  // For reverse
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+void displayBackward(struct Node* tail) {
+    printf("List (backward):\n");
+    while (tail != NULL) {
+        printf("%s <-> ", tail->data);
+        tail = tail->prev;
+    }
+    printf("NULL\n");
+}
+
+void deleteList(struct Node** head) {
+    struct Node* temp = *head;
+    while (temp != NULL) {
+        struct Node* next = temp->next;
+        free(temp);
+        temp = next;
+    }
+    *head = NULL;
+    printf("List deleted.\n");
+}
+
+struct Node* getTail(struct Node* head) {
+    while (head && head->next != NULL)
+        head = head->next;
+    return head;
+}
+
+int main() {
+    struct Node* head = NULL;
+    insertAtEnd(&head, "apple");
+    insertAtEnd(&head, "banana");
+    insertAtEnd(&head, "cherry");
+    insertAtEnd(&head, "date");
+    insertAtEnd(&head, "fig");
+    printf("Initial list:\n");
+    displayForward(head);
+    insertAtBeginning(&head, "grape");
+    printf("\nAfter inserting 'grape' at beginning:\n");
+    displayForward(head);
+    insertAtEnd(&head, "honeydew");
+    printf("\nAfter inserting 'honeydew' at end:\n");
+    displayForward(head);
+    insertAtPosition(&head, "coconut", 4);
+    printf("\nAfter inserting 'coconut' at position 4:\n");
+    displayForward(head);
+    struct Node* tail = getTail(head);
+    printf("\n");
+    displayBackward(tail);
+    printf("\nDeleting list...\n");
+    deleteList(&head);
+    displayForward(head);
+
+    return 0;
+}
