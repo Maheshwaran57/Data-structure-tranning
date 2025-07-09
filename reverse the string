@@ -1,0 +1,13 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+int main(){
+    char brand[]="Lenovo";
+    printf("Reversed string is:");
+    for(int i=strlen(brand)-1;i>=0;i--){
+        printf("%c",brand[i]);
+    }
+     
+}
+
+       
