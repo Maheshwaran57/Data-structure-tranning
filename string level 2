@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+int main() {
+    char brand[] = "MSI";
+    int len = strlen(brand);
+    printf("1. Reversed string: ");
+    for (int i = len - 1; i >= 0; i--) {
+        printf("%c", brand[i]);
+    }
+    printf("\n");
+    char sentence1[] = "Popular brands are Dell, HP, and Lenovo";
+    if (strstr(sentence1, "Dell") != NULL) {
+        printf("2. \"Dell\" found in the sentence.\n");
+    } else {
+        printf("2. \"Dell\" not found.\n");
+    }
+    char sentence2[] = "HP, HP, Lenovo, Dell";
+    int count = 0;
+    char temp[100];
+    strcpy(temp, sentence2); 
+    char *token = strtok(temp, ", ");
+    while (token != NULL) {
+        if (strcmp(token, "HP") == 0) {
+            count++;
+        }
+        token = strtok(NULL, ", ");
+    }
+    printf("3. \"HP\" appears %d times.\n", count);
+    char brands[4][20] = {"Lenovo", "Dell", "HP", "Asus"};
+    int n = 4;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (strcmp(brands[i], brands[j]) > 0) {
+                char temp[20];
+                strcpy(temp, brands[i]);
+                strcpy(brands[i], brands[j]);
+                strcpy(brands[j], temp);
+            }
+        }
+    }
+    printf("4. Sorted brand names:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", brands[i]);
+    }
+    char sentence3[100] = "Apple is a premium brand";
+    char result[100];
+    char *pos = strstr(sentence3, "Apple");
+
+    if (pos != NULL) {
+        int index = pos - sentence3;
+        strncpy(result, sentence3, index);
+        result[index] = '\0';
+        strcat(result, "MSI");
+        strcat(result, pos + strlen("Apple"));
+        printf("10. After replacement: %s\n", result);
+    } else {
+        printf("10. Brand not found.\n");
+    }
+
+    return 0;
+}
