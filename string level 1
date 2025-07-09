@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h>
+int main(){
+    char brand[]="Lenovo";
+        char brand1[]="Dell"; 
+        char brand2[]="hp";
+        printf("Length of %s is %d",brand,strlen(brand));
+        strcat(brand1,brand2);
+        printf("\n concatenation :%s\n",brand1);
+        char brand3[]="Asus";
+        printf("2nd character in string is %c",brand3[1]);
+        char fruit[]="apple";
+        for (int i=0;i<strlen(fruit);i++){
+            printf(" %c   " ,fruit[i]);
+        }
+    char str[] = "Apple";
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = toupper(str[i]);
+    }
+    printf("Uppercase string: %s\n", str);
+
+  
+}
+
+       
